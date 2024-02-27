@@ -1,4 +1,7 @@
 {
+  "name": "@lambdalisue/unknownutil",
+  "version": "3.16.3-alpha",
+  "exports": "./mod.ts",
   "lock": false,
   "imports": {
     "https://deno.land/x/unknownutil@$MODULE_VERSION/": "./"

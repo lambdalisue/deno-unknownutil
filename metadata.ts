@@ -1,13 +1,11 @@
 import type { Predicate } from "./is/type.ts";
 import { inspect } from "./inspect.ts";
 
-const metadataKey = "__unknownutil_metadata";
-
 /**
  * A type that has metadata.
  */
 export type WithMetadata<T> = {
-  [metadataKey]: T;
+  __unknownutil_metadata: T;
 };
 
 /**
@@ -21,7 +19,7 @@ export type GetMetadata<T> = T extends WithMetadata<infer M> ? M : never;
 export function getMetadata<T>(v: unknown): T | undefined {
   if (v == null) return undefined;
   // deno-lint-ignore no-explicit-any
-  return (v as any)[metadataKey];
+  return (v as any).__unknownutil_metadata;
 }
 
 /**
@@ -44,7 +42,7 @@ export function setPredicateFactoryMetadata<
 ): P & WithMetadata<M> {
   let cachedName: string | undefined;
   return Object.defineProperties(pred, {
-    [metadataKey]: {
+    __unknownutil_metadata: {
       value: metadata,
       configurable: true,
     },

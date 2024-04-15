@@ -239,7 +239,22 @@
  * @module
  */
 
-export type * from "./type.ts";
-export * from "./is.ts";
-export * from "./metadata.ts";
-export * from "./util.ts";
+export type { Predicate, PredicateType, Primitive } from "./type.ts";
+export { is } from "./is.ts";
+export {
+  type GetMetadata,
+  getMetadata,
+  getPredicateFactoryMetadata,
+  type PredicateFactoryMetadata,
+  setPredicateFactoryMetadata,
+  type WithMetadata,
+} from "./metadata.ts";
+export {
+  assert,
+  AssertError,
+  type AssertMessageFactory,
+  defaultAssertMessageFactory,
+  ensure,
+  maybe,
+  setAssertMessageFactory,
+} from "./util.ts";

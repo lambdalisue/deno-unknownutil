@@ -1,10 +1,11 @@
-import type { Predicate } from "./type.ts";
+import type { Predicate, PredicateType } from "./type.ts";
 import {
+  type GetMetadata,
   getPredicateFactoryMetadata,
   setPredicateFactoryMetadata,
   type WithMetadata,
 } from "./metadata.ts";
-import { isOptional } from "./is.ts";
+import { isOptional, isReadonly } from "./is.ts";
 
 /**
  * Return an `Optional` annotated type predicate function that returns `true` if the type of `x` is `T` or `undefined`.
@@ -38,26 +39,22 @@ import { isOptional } from "./is.ts";
  * }
  * ```
  */
-function asOptional<T>(
-  pred: Predicate<T>,
-):
-  & Predicate<T | undefined>
-  & WithMetadata<AsOptionalMetadata> {
+function asOptional<P extends Predicate<unknown>>(
+  pred: P,
+): AsOptional<P> {
   if (isOptional(pred)) {
-    return pred as
-      & Predicate<T | undefined>
-      & WithMetadata<AsOptionalMetadata>;
+    return pred as AsOptional<P>;
   }
-  return Object.defineProperties(
-    setPredicateFactoryMetadata(
-      (x: unknown): x is T | undefined => x === undefined || pred(x),
-      { name: "asOptional", args: [pred] },
-    ),
-    { optional: { value: true as const } },
-  ) as
-    & Predicate<T | undefined>
-    & WithMetadata<AsOptionalMetadata>;
+  return setPredicateFactoryMetadata(
+    (x: unknown): x is PredicateType<P> | undefined =>
+      x === undefined || pred(x),
+    { name: "asOptional", args: [pred] },
+  ) as AsOptional<P>;
 }
+
+export type AsOptional<P> = P extends Predicate<infer U>
+  ? Predicate<U | undefined> & GetMetadata<P> & WithMetadata<AsOptionalMetadata>
+  : never;
 
 export type AsOptionalMetadata = {
   name: "asOptional";
@@ -109,7 +106,29 @@ export type AsRequired<T> = T extends
   : T extends Predicate<unknown> ? T
   : never;
 
+function asReadonly<P extends Predicate<unknown>>(
+  pred: P,
+): AsReadonly<P> {
+  if (isReadonly(pred)) {
+    return pred as AsReadonly<P>;
+  }
+  return setPredicateFactoryMetadata(
+    (x: unknown): x is PredicateType<P> => pred(x),
+    { name: "asReadonly", args: [pred] },
+  ) as AsReadonly<P>;
+}
+
+export type AsReadonly<P> = P extends Predicate<infer U>
+  ? Predicate<U> & WithMetadata<GetMetadata<P> & AsReadonlyMetadata>
+  : never;
+
+export type AsReadonlyMetadata = {
+  name: "asReadonly";
+  args: Parameters<typeof asReadonly>;
+};
+
 export const as = {
   Optional: asOptional,
+  Readonly: asReadonly,
   Required: asRequired,
 };

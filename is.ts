@@ -8,7 +8,12 @@ import {
   setPredicateFactoryMetadata,
   type WithMetadata,
 } from "./metadata.ts";
-import { as, type AsOptionalMetadata, type AsRequired } from "./as.ts";
+import {
+  as,
+  type AsOptionalMetadata,
+  type AsReadonlyMetadata,
+  type AsRequired,
+} from "./as.ts";
 
 const objectToString = Object.prototype.toString;
 const primitiveSet = new Set([
@@ -380,6 +385,14 @@ export function isOptional<P extends Predicate<unknown>>(
   return (m as PredicateFactoryMetadata).name === "asOptional";
 }
 
+export function isReadonly<P extends Predicate<unknown>>(
+  x: P,
+): x is P & WithMetadata<AsReadonlyMetadata> {
+  const m = getMetadata(x);
+  if (m == null) return false;
+  return (m as PredicateFactoryMetadata).name === "asReadonly";
+}
+
 /**
  * Return an `Optional` annotated type predicate function that returns `true` if the type of `x` is `T` or `undefined`.
  *
@@ -428,19 +441,6 @@ function isUnwrapOptionalOf<P extends Predicate<unknown>>(
   pred: P,
 ): AsRequired<P> {
   return as.Required(pred);
-}
-
-/**
- * Return `true` if the type of predicate function `x` is annotated as `Readonly`
- *
- * **This is unstable and may be removed in the future.**
- */
-function isReadonly<P extends Predicate<unknown>>(
-  x: P,
-): x is P & WithMetadata<IsReadonlyOfMetadata> {
-  const m = getMetadata(x);
-  if (m == null) return false;
-  return (m as PredicateFactoryMetadata).name === "isReadonlyOf";
 }
 
 /**
@@ -1079,16 +1079,31 @@ type WithOptional =
   | WithMetadata<GetMetadata<ReturnType<typeof as.Optional>>>
   | { optional: true }; // For backward compatibility
 
+type WithReadonly = WithMetadata<GetMetadata<ReturnType<typeof as.Readonly>>>;
+
 type ObjectOf<T extends Record<PropertyKey, Predicate<unknown>>> = FlatType<
-  // Non optional
+  // Non readonly / Non optional
   & {
-    [K in keyof T as T[K] extends WithOptional ? never : K]: T[K] extends
-      Predicate<infer U> ? U : never;
+    [K in keyof T as T[K] extends (WithReadonly | WithOptional) ? never : K]:
+      T[K] extends Predicate<infer U> ? U : never;
+  }
+  // Readonly / Optional
+  & {
+    readonly [
+      K in keyof T as T[K] extends (WithReadonly | WithOptional) ? K : never
+    ]?: T[K] extends Predicate<infer U> ? U : never;
+  }
+  // Readonly
+  & {
+    readonly [
+      K in keyof T as T[K] extends WithReadonly ? K : never
+    ]: T[K] extends Predicate<infer U> ? U : never;
   }
   // Optional
   & {
-    [K in keyof T as T[K] extends WithOptional ? K : never]?: T[K] extends
-      Predicate<infer U> ? U : never;
+    [
+      K in keyof T as T[K] extends WithOptional ? K : never
+    ]?: T[K] extends Predicate<infer U> ? U : never;
   }
 >;
 

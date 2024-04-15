@@ -97,3 +97,30 @@ Deno.test("as.Required<T>", async (t) => {
     assertEquals(pred([0]), false, "invalid");
   });
 });
+
+Deno.test("as.Readonly<T>", async (t) => {
+  await t.step("returns properly named function", async (t) => {
+    await assertSnapshot(t, as.Readonly(is.Number).name);
+    // Nesting does nothing
+    await assertSnapshot(
+      t,
+      as.Readonly(as.Readonly(is.Number)).name,
+    );
+  });
+  await t.step("returns proper type predicate", () => {
+    const a: unknown = undefined;
+    if (is.ObjectOf({ foo: as.Readonly(is.Number) })(a)) {
+      assertType<Equal<typeof a, { readonly foo: number }>>(true);
+    }
+    if (is.ObjectOf({ foo: as.Readonly(as.Optional(is.Number)) })(a)) {
+      assertType<Equal<typeof a, { readonly foo?: number }>>(true);
+    }
+  });
+  await t.step("with is.ObjectOf", () => {
+    const pred = is.ObjectOf({ foo: as.Readonly(is.String) });
+    assertEquals(pred({}), false, "omit");
+    assertEquals(pred({ foo: undefined }), true, "undefined");
+    assertEquals(pred({ foo: "string" }), true, "valid");
+    assertEquals(pred({ foo: 0 }), false, "invalid");
+  });
+});

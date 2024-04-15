@@ -11,7 +11,8 @@ export type WithMetadata<T> = {
 /**
  * Get typeof the metadata
  */
-export type GetMetadata<T> = T extends WithMetadata<infer M> ? M : never;
+export type GetMetadata<T> = T extends WithMetadata<infer M> ? M
+  : Record<PropertyKey, never>;
 
 /**
  * Get metadata from the given value
@@ -39,7 +40,7 @@ export function setPredicateFactoryMetadata<
 >(
   pred: P,
   metadata: M,
-): P & WithMetadata<M> {
+): P & GetMetadata<P> & WithMetadata<M> {
   let cachedName: string | undefined;
   return Object.defineProperties(pred, {
     __unknownutil_metadata: {
@@ -54,7 +55,7 @@ export function setPredicateFactoryMetadata<
         return cachedName;
       },
     },
-  }) as P & WithMetadata<M>;
+  }) as P & GetMetadata<P> & WithMetadata<M>;
 }
 
 /**

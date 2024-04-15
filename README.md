@@ -34,7 +34,7 @@ if (is.String(a)) {
 For more complex types, you can use `is.*Of` functions like:
 
 ```typescript
-import { is, PredicateType } from "@core/unknownutil";
+import { as, is, PredicateType } from "@core/unknownutil";
 
 const isArticle = is.ObjectOf({
   title: is.String,
@@ -48,8 +48,8 @@ const isArticle = is.ObjectOf({
       }),
     ]),
   ),
-  createTime: is.OptionalOf(is.InstanceOf(Date)),
-  updateTime: is.OptionalOf(is.InstanceOf(Date)),
+  createTime: as.Optional(is.InstanceOf(Date)),
+  updateTime: as.Optional(is.InstanceOf(Date)),
 });
 
 // Infer the type of `Article` from the definition of `isArticle`
@@ -80,7 +80,7 @@ Additionally, you can manipulate the predicate function returned from
 similar to TypeScript's `Pick`, `Omit`, `Partial`, `Required` utility types.
 
 ```typescript
-import { is } from "@core/unknownutil";
+import { as, is } from "@core/unknownutil";
 
 const isArticle = is.ObjectOf({
   title: is.String,
@@ -94,8 +94,8 @@ const isArticle = is.ObjectOf({
       }),
     ]),
   ),
-  createTime: is.OptionalOf(is.InstanceOf(Date)),
-  updateTime: is.OptionalOf(is.InstanceOf(Date)),
+  createTime: as.Optional(is.InstanceOf(Date)),
+  updateTime: as.Optional(is.InstanceOf(Date)),
 });
 
 const isArticleCreateParams = is.PickOf(isArticle, ["title", "body", "refs"]);
@@ -132,8 +132,8 @@ const isArticleUpdateParams = is.OmitOf(isArticleCreateParams, ["title"]);
 const isArticlePatchParams = is.PartialOf(isArticleUpdateParams);
 // is equivalent to
 //const isArticlePatchParams = is.ObjectOf({
-//  body: is.OptionalOf(is.String),
-//  refs: is.OptionalOf(is.ArrayOf(
+//  body: as.Optional(is.String),
+//  refs: as.Optional(is.ArrayOf(
 //    is.UnionOf([
 //      is.String,
 //      is.ObjectOf({

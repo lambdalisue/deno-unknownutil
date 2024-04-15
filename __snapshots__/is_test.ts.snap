@@ -1,8 +1,8 @@
 export const snapshot = {};
 
-snapshot[`is.OptionalOf<T> > returns properly named function 1`] = `"isOptionalOf(isNumber)"`;
+snapshot[`is.OptionalOf<T> > returns properly named function 1`] = `"asOptional(isNumber)"`;
 
-snapshot[`is.OptionalOf<T> > returns properly named function 2`] = `"isOptionalOf(isNumber)"`;
+snapshot[`is.OptionalOf<T> > returns properly named function 2`] = `"asOptional(isNumber)"`;
 
 snapshot[`is.UnwrapOptionalOf<T> > returns properly named function 1`] = `"isNumber"`;
 
@@ -74,7 +74,7 @@ snapshot[`is.ParametersOf<T> > returns properly named function 1`] = `
 "isParametersOf([
   isNumber,
   isString,
-  isOptionalOf(isBoolean)
+  asOptional(isBoolean)
 ])"
 `;
 
@@ -88,7 +88,7 @@ snapshot[`is.ParametersOf<T> > returns properly named function 4`] = `
     isParametersOf([
       isNumber,
       isString,
-      isOptionalOf(isBoolean)
+      asOptional(isBoolean)
     ])
   ])
 ])"
@@ -98,7 +98,7 @@ snapshot[`is.ParametersOf<T, E> > returns properly named function 1`] = `
 "isParametersOf([
   isNumber,
   isString,
-  isOptionalOf(isBoolean)
+  asOptional(isBoolean)
 ], isArray)"
 `;
 
@@ -112,7 +112,7 @@ snapshot[`is.ParametersOf<T, E> > returns properly named function 4`] = `
     isParametersOf([
       isNumber,
       isString,
-      isOptionalOf(isBoolean)
+      asOptional(isBoolean)
     ], isArray)
   ], isArray)
 ])"
@@ -252,23 +252,23 @@ snapshot[`is.RequiredOf<T> > returns properly named function 2`] = `
 
 snapshot[`is.PartialOf<T> > returns properly named function 1`] = `
 "isObjectOf({
-  a: isOptionalOf(isNumber),
-  b: isOptionalOf(isUnionOf([
+  a: asOptional(isNumber),
+  b: asOptional(isUnionOf([
     isString,
     isUndefined
   ])),
-  c: isOptionalOf(isBoolean)
+  c: asOptional(isBoolean)
 })"
 `;
 
 snapshot[`is.PartialOf<T> > returns properly named function 2`] = `
 "isObjectOf({
-  a: isOptionalOf(isNumber),
-  b: isOptionalOf(isUnionOf([
+  a: asOptional(isNumber),
+  b: asOptional(isUnionOf([
     isString,
     isUndefined
   ])),
-  c: isOptionalOf(isBoolean)
+  c: asOptional(isBoolean)
 })"
 `;
 

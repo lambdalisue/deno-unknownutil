@@ -1,0 +1,11 @@
+export const snapshot = {};
+
+snapshot[`as.Optional<T> > returns properly named function 1`] = `"asOptional(isNumber)"`;
+
+snapshot[`as.Optional<T> > returns properly named function 2`] = `"asOptional(isNumber)"`;
+
+snapshot[`as.Required<T> > returns properly named function 1`] = `"isNumber"`;
+
+snapshot[`as.Required<T> > returns properly named function 2`] = `"isNumber"`;
+
+snapshot[`as.Required<T> > returns properly named function 3`] = `"isNumber"`;

@@ -25,6 +25,7 @@
  *
  * ```typescript
  * import {
+ *   as,
  *   is,
  *   PredicateType,
  * } from "@core/unknownutil";
@@ -41,8 +42,8 @@
  *       }),
  *     ]),
  *   ),
- *   createTime: is.OptionalOf(is.InstanceOf(Date)),
- *   updateTime: is.OptionalOf(is.InstanceOf(Date)),
+ *   createTime: as.Optional(is.InstanceOf(Date)),
+ *   updateTime: as.Optional(is.InstanceOf(Date)),
  * });
  *
  * // Infer the type of `Article` from the definition of `isArticle`
@@ -73,7 +74,7 @@
  * similar to TypeScript's `Pick`, `Omit`, `Partial`, `Required` utility types.
  *
  * ```typescript
- * import { is } from "@core/unknownutil";
+ * import { as, is } from "@core/unknownutil";
  *
  * const isArticle = is.ObjectOf({
  *   title: is.String,
@@ -87,8 +88,8 @@
  *       }),
  *     ]),
  *   ),
- *   createTime: is.OptionalOf(is.InstanceOf(Date)),
- *   updateTime: is.OptionalOf(is.InstanceOf(Date)),
+ *   createTime: as.Optional(is.InstanceOf(Date)),
+ *   updateTime: as.Optional(is.InstanceOf(Date)),
  * });
  *
  * const isArticleCreateParams = is.PickOf(isArticle, ["title", "body", "refs"]);
@@ -125,8 +126,8 @@
  * const isArticlePatchParams = is.PartialOf(isArticleUpdateParams);
  * // is equivalent to
  * //const isArticlePatchParams = is.ObjectOf({
- * //  body: is.OptionalOf(is.String),
- * //  refs: is.OptionalOf(is.ArrayOf(
+ * //  body: as.Optional(is.String),
+ * //  refs: as.Optional(is.ArrayOf(
  * //    is.UnionOf([
  * //      is.String,
  * //      is.ObjectOf({
@@ -240,6 +241,7 @@
  */
 
 export type { Predicate, PredicateType, Primitive } from "./type.ts";
+export { as } from "./as.ts";
 export { is } from "./is.ts";
 export {
   type GetMetadata,

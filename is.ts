@@ -32,7 +32,7 @@ const primitiveSet = new Set([
  * ```
  */
 // deno-lint-ignore no-explicit-any
-export function isAny(_x: unknown): _x is any {
+function isAny(_x: unknown): _x is any {
   return true;
 }
 
@@ -49,7 +49,7 @@ export function isAny(_x: unknown): _x is any {
  * }
  * ```
  */
-export function isUnknown(_x: unknown): _x is unknown {
+function isUnknown(_x: unknown): _x is unknown {
   return true;
 }
 
@@ -66,7 +66,7 @@ export function isUnknown(_x: unknown): _x is unknown {
  * }
  * ```
  */
-export function isString(x: unknown): x is string {
+function isString(x: unknown): x is string {
   return typeof x === "string";
 }
 
@@ -83,7 +83,7 @@ export function isString(x: unknown): x is string {
  * }
  * ```
  */
-export function isNumber(x: unknown): x is number {
+function isNumber(x: unknown): x is number {
   return typeof x === "number";
 }
 
@@ -100,7 +100,7 @@ export function isNumber(x: unknown): x is number {
  * }
  * ```
  */
-export function isBigInt(x: unknown): x is bigint {
+function isBigInt(x: unknown): x is bigint {
   return typeof x === "bigint";
 }
 
@@ -117,7 +117,7 @@ export function isBigInt(x: unknown): x is bigint {
  * }
  * ```
  */
-export function isBoolean(x: unknown): x is boolean {
+function isBoolean(x: unknown): x is boolean {
   return typeof x === "boolean";
 }
 
@@ -134,7 +134,7 @@ export function isBoolean(x: unknown): x is boolean {
  * }
  * ```
  */
-export function isArray(
+function isArray(
   x: unknown,
 ): x is unknown[] {
   return Array.isArray(x);
@@ -153,7 +153,7 @@ export function isArray(
  * }
  * ```
  */
-export function isSet(x: unknown): x is Set<unknown> {
+function isSet(x: unknown): x is Set<unknown> {
   return x instanceof Set;
 }
 
@@ -178,7 +178,7 @@ export function isSet(x: unknown): x is Set<unknown> {
  * }
  * ```
  */
-export function isRecordObject(
+function isRecordObject(
   x: unknown,
 ): x is Record<PropertyKey, unknown> {
   return x != null && typeof x === "object" && x.constructor === Object;
@@ -205,7 +205,7 @@ export function isRecordObject(
  * }
  * ```
  */
-export function isRecord(
+function isRecord(
   x: unknown,
 ): x is Record<PropertyKey, unknown> {
   return x != null && !Array.isArray(x) && typeof x === "object";
@@ -224,7 +224,7 @@ export function isRecord(
  * }
  * ```
  */
-export function isMap(x: unknown): x is Map<unknown, unknown> {
+function isMap(x: unknown): x is Map<unknown, unknown> {
   return x instanceof Map;
 }
 
@@ -241,7 +241,7 @@ export function isMap(x: unknown): x is Map<unknown, unknown> {
  * }
  * ```
  */
-export function isFunction(x: unknown): x is (...args: unknown[]) => unknown {
+function isFunction(x: unknown): x is (...args: unknown[]) => unknown {
   return x instanceof Function;
 }
 
@@ -258,7 +258,7 @@ export function isFunction(x: unknown): x is (...args: unknown[]) => unknown {
  * }
  * ```
  */
-export function isSyncFunction(
+function isSyncFunction(
   x: unknown,
 ): x is (...args: unknown[]) => unknown {
   return objectToString.call(x) === "[object Function]";
@@ -277,7 +277,7 @@ export function isSyncFunction(
  * }
  * ```
  */
-export function isAsyncFunction(
+function isAsyncFunction(
   x: unknown,
 ): x is (...args: unknown[]) => Promise<unknown> {
   return objectToString.call(x) === "[object AsyncFunction]";
@@ -296,7 +296,7 @@ export function isAsyncFunction(
  * }
  * ```
  */
-export function isNull(x: unknown): x is null {
+function isNull(x: unknown): x is null {
   return x === null;
 }
 
@@ -313,7 +313,7 @@ export function isNull(x: unknown): x is null {
  * }
  * ```
  */
-export function isUndefined(x: unknown): x is undefined {
+function isUndefined(x: unknown): x is undefined {
   return typeof x === "undefined";
 }
 
@@ -330,7 +330,7 @@ export function isUndefined(x: unknown): x is undefined {
  * }
  * ```
  */
-export function isNullish(x: unknown): x is null | undefined {
+function isNullish(x: unknown): x is null | undefined {
   return x == null;
 }
 
@@ -347,7 +347,7 @@ export function isNullish(x: unknown): x is null | undefined {
  * }
  * ```
  */
-export function isSymbol(x: unknown): x is symbol {
+function isSymbol(x: unknown): x is symbol {
   return typeof x === "symbol";
 }
 
@@ -364,14 +364,14 @@ export function isSymbol(x: unknown): x is symbol {
  * }
  * ```
  */
-export function isPrimitive(x: unknown): x is Primitive {
+function isPrimitive(x: unknown): x is Primitive {
   return x == null || primitiveSet.has(typeof x);
 }
 
 /**
  * Return `true` if the type of predicate function `x` is annotated as `Optional`
  */
-export function isOptional<P extends Predicate<unknown>>(
+function isOptional<P extends Predicate<unknown>>(
   x: P,
 ): x is P & WithMetadata<IsOptionalOfMetadata> {
   const m = getMetadata(x);
@@ -395,7 +395,7 @@ export function isOptional<P extends Predicate<unknown>>(
  * }
  * ```
  */
-export function isOptionalOf<T>(
+function isOptionalOf<T>(
   pred: Predicate<T>,
 ):
   & Predicate<T | undefined>
@@ -437,7 +437,7 @@ type IsOptionalOfMetadata = {
  * }
  * ```
  */
-export function isUnwrapOptionalOf<P extends Predicate<unknown>>(
+function isUnwrapOptionalOf<P extends Predicate<unknown>>(
   pred: P,
 ): UnwrapOptionalOf<P> {
   if (!isOptional(pred)) return pred as UnwrapOptionalOf<P>;
@@ -456,7 +456,7 @@ type UnwrapOptionalOf<T> = T extends
  *
  * **This is unstable and may be removed in the future.**
  */
-export function isReadonly<P extends Predicate<unknown>>(
+function isReadonly<P extends Predicate<unknown>>(
   x: P,
 ): x is P & WithMetadata<IsReadonlyOfMetadata> {
   const m = getMetadata(x);
@@ -484,7 +484,7 @@ export function isReadonly<P extends Predicate<unknown>>(
  * }
  * ```
  */
-export function isReadonlyOf<T>(
+function isReadonlyOf<T>(
   pred: Predicate<T>,
 ):
   & Predicate<Readonly<T>>
@@ -520,7 +520,7 @@ type IsReadonlyOfMetadata = {
  * }
  * ```
  */
-export function isUnwrapReadonlyOf<P extends Predicate<unknown>>(
+function isUnwrapReadonlyOf<P extends Predicate<unknown>>(
   pred: P,
 ): UnwrapReadonlyOf<P> {
   if (!isReadonly(pred)) return pred as UnwrapReadonlyOf<P>;
@@ -550,7 +550,7 @@ type UnwrapReadonlyOf<T> = T extends
  * }
  * ```
  */
-export function isArrayOf<T>(
+function isArrayOf<T>(
   pred: Predicate<T>,
 ): Predicate<T[]> & WithMetadata<IsArrayOfMetadata> {
   return setPredicateFactoryMetadata(
@@ -580,7 +580,7 @@ type IsArrayOfMetadata = {
  * }
  * ```
  */
-export function isSetOf<T>(
+function isSetOf<T>(
   pred: Predicate<T>,
 ): Predicate<Set<T>> & WithMetadata<IsSetOfMetadata> {
   return setPredicateFactoryMetadata(
@@ -647,12 +647,12 @@ type IsSetOfMetadata = {
  * }
  * ```
  */
-export function isTupleOf<
+function isTupleOf<
   T extends readonly [Predicate<unknown>, ...Predicate<unknown>[]],
 >(
   predTup: T,
 ): Predicate<TupleOf<T>> & WithMetadata<IsTupleOfMetadata>;
-export function isTupleOf<
+function isTupleOf<
   T extends readonly [Predicate<unknown>, ...Predicate<unknown>[]],
   E extends Predicate<unknown[]>,
 >(
@@ -661,7 +661,7 @@ export function isTupleOf<
 ):
   & Predicate<[...TupleOf<T>, ...PredicateType<E>]>
   & WithMetadata<IsTupleOfMetadata>;
-export function isTupleOf<
+function isTupleOf<
   T extends readonly [Predicate<unknown>, ...Predicate<unknown>[]],
   E extends Predicate<unknown[]>,
 >(
@@ -764,12 +764,12 @@ type IsTupleOfMetadata = {
  * }
  * ```
  */
-export function isParametersOf<
+function isParametersOf<
   T extends readonly [...Predicate<unknown>[]],
 >(
   predTup: T,
 ): Predicate<ParametersOf<T>> & WithMetadata<IsParametersOfMetadata>;
-export function isParametersOf<
+function isParametersOf<
   T extends readonly [...Predicate<unknown>[]],
   E extends Predicate<unknown[]>,
 >(
@@ -778,7 +778,7 @@ export function isParametersOf<
 ):
   & Predicate<[...ParametersOf<T>, ...PredicateType<E>]>
   & WithMetadata<IsParametersOfMetadata>;
-export function isParametersOf<
+function isParametersOf<
   T extends readonly [...Predicate<unknown>[]],
   E extends Predicate<unknown[]>,
 >(
@@ -865,7 +865,7 @@ type IsParametersOfMetadata = {
  * }
  * ```
  */
-export function isUniformTupleOf<T, N extends number>(
+function isUniformTupleOf<T, N extends number>(
   n: N,
   pred: Predicate<T> = isAny,
 ): Predicate<UniformTupleOf<T, N>> & WithMetadata<IsUniformTupleOfMetadata> {
@@ -924,7 +924,7 @@ type IsUniformTupleOfMetadata = {
  * }
  * ```
  */
-export function isRecordObjectOf<T, K extends PropertyKey = PropertyKey>(
+function isRecordObjectOf<T, K extends PropertyKey = PropertyKey>(
   pred: Predicate<T>,
   predKey?: Predicate<K>,
 ): Predicate<Record<K, T>> & WithMetadata<IsRecordObjectOfMetadata> {
@@ -975,7 +975,7 @@ type IsRecordObjectOfMetadata = {
  * }
  * ```
  */
-export function isRecordOf<T, K extends PropertyKey = PropertyKey>(
+function isRecordOf<T, K extends PropertyKey = PropertyKey>(
   pred: Predicate<T>,
   predKey?: Predicate<K>,
 ): Predicate<Record<K, T>> & WithMetadata<IsRecordOfMetadata> {
@@ -1026,7 +1026,7 @@ type IsRecordOfMetadata = {
  * }
  * ```
  */
-export function isMapOf<T, K>(
+function isMapOf<T, K>(
   pred: Predicate<T>,
   predKey?: Predicate<K>,
 ): Predicate<Map<K, T>> & WithMetadata<IsMapOfMetadata> {
@@ -1074,12 +1074,12 @@ type IsMapOfMetadata = {
  * }
  * ```
  */
-export function isObjectOf<
+function isObjectOf<
   T extends Record<PropertyKey, Predicate<unknown>>,
 >(
   predObj: T,
 ): Predicate<ObjectOf<T>> & WithMetadata<IsObjectOfMetadata>;
-export function isObjectOf<
+function isObjectOf<
   T extends Record<PropertyKey, Predicate<unknown>>,
 >(
   predObj: T,
@@ -1151,7 +1151,7 @@ type IsObjectOfMetadata = {
  * }
  * ```
  */
-export function isStrictOf<T extends Record<PropertyKey, unknown>>(
+function isStrictOf<T extends Record<PropertyKey, unknown>>(
   pred:
     & Predicate<T>
     & WithMetadata<IsObjectOfMetadata>,
@@ -1193,7 +1193,7 @@ type IsStrictOfMetadata = {
  * ```
  */
 // deno-lint-ignore no-explicit-any
-export function isInstanceOf<T extends new (...args: any) => unknown>(
+function isInstanceOf<T extends new (...args: any) => unknown>(
   ctor: T,
 ): Predicate<InstanceType<T>> & WithMetadata<IsInstanceOfMetadata> {
   return setPredicateFactoryMetadata(
@@ -1223,7 +1223,7 @@ type IsInstanceOfMetadata = {
  * }
  * ```
  */
-export function isLiteralOf<T extends Primitive>(
+function isLiteralOf<T extends Primitive>(
   literal: T,
 ): Predicate<T> & WithMetadata<IsLiteralOfMetadata> {
   return setPredicateFactoryMetadata(
@@ -1253,7 +1253,7 @@ type IsLiteralOfMetadata = {
  * }
  * ```
  */
-export function isLiteralOneOf<T extends readonly Primitive[]>(
+function isLiteralOneOf<T extends readonly Primitive[]>(
   literals: T,
 ): Predicate<T[number]> & WithMetadata<IsLiteralOneOfMetadata> {
   const s = new Set(literals);
@@ -1299,7 +1299,7 @@ type IsLiteralOneOfMetadata = {
  * }
  * ```
  */
-export function isUnionOf<
+function isUnionOf<
   T extends readonly [Predicate<unknown>, ...Predicate<unknown>[]],
 >(
   preds: T,
@@ -1356,7 +1356,7 @@ type IsUnionOfMetadata = {
  * }
  * ```
  */
-export function isIntersectionOf<
+function isIntersectionOf<
   T extends readonly [
     Predicate<unknown> & WithMetadata<IsObjectOfMetadata>,
     ...(Predicate<unknown> & WithMetadata<IsObjectOfMetadata>)[],
@@ -1364,17 +1364,17 @@ export function isIntersectionOf<
 >(
   preds: T,
 ): Predicate<IntersectionOf<T>> & WithMetadata<IsObjectOfMetadata>;
-export function isIntersectionOf<
+function isIntersectionOf<
   T extends readonly [Predicate<unknown>],
 >(
   preds: T,
 ): T[0];
-export function isIntersectionOf<
+function isIntersectionOf<
   T extends readonly [Predicate<unknown>, ...Predicate<unknown>[]],
 >(
   preds: T,
 ): Predicate<IntersectionOf<T>> & WithMetadata<IsIntersectionOfMetadata>;
-export function isIntersectionOf<
+function isIntersectionOf<
   T extends readonly [Predicate<unknown>, ...Predicate<unknown>[]],
 >(
   preds: T,
@@ -1429,7 +1429,7 @@ type IsIntersectionOfMetadata = {
  * }
  * ```
  */
-export function isRequiredOf<
+function isRequiredOf<
   T extends Record<PropertyKey, unknown>,
 >(
   pred: Predicate<T> & WithMetadata<IsObjectOfMetadata>,
@@ -1466,7 +1466,7 @@ export function isRequiredOf<
  * }
  * ```
  */
-export function isPartialOf<
+function isPartialOf<
   T extends Record<PropertyKey, unknown>,
 >(
   pred: Predicate<T> & WithMetadata<IsObjectOfMetadata>,
@@ -1503,7 +1503,7 @@ export function isPartialOf<
  * }
  * ```
  */
-export function isPickOf<
+function isPickOf<
   T extends Record<PropertyKey, unknown>,
   K extends keyof T,
 >(
@@ -1543,7 +1543,7 @@ export function isPickOf<
  * }
  * ```
  */
-export function isOmitOf<
+function isOmitOf<
   T extends Record<PropertyKey, unknown>,
   K extends keyof T,
 >(

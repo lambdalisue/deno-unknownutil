@@ -16,11 +16,11 @@ A utility pack for handling `unknown` type.
 It provides `is` module for type predicate functions and `assert`, `ensure`, and
 `maybe` helper functions.
 
-### is\*
+### is.\*
 
 Type predicate function is a function which returns `true` if a given value is
-expected type. For example, `isString` (or `is.String`) returns `true` if a
-given value is `string`.
+expected type. For example, `is.String` returns `true` if a given value is
+`string`.
 
 ```typescript
 import { is } from "@core/unknownutil";
@@ -31,7 +31,7 @@ if (is.String(a)) {
 }
 ```
 
-For more complex types, you can use `is*Of` (or `is.*Of`) functions like:
+For more complex types, you can use `is.*Of` functions like:
 
 ```typescript
 import { is, PredicateType } from "@core/unknownutil";
@@ -76,7 +76,7 @@ if (isArticle(a)) {
 ```
 
 Additionally, you can manipulate the predicate function returned from
-`isObjectOf` with `isPickOf`, `isOmitOf`, `isPartialOf`, and `isRequiredOf`
+`is.ObjectOf` with `is.PickOf`, `is.OmitOf`, `is.PartialOf`, and `is.RequiredOf`
 similar to TypeScript's `Pick`, `Omit`, `Partial`, `Required` utility types.
 
 ```typescript
@@ -162,8 +162,8 @@ const isArticleAvailableParams = is.RequiredOf(isArticle);
 //});
 ```
 
-If you need an union type or an intersection type, use `isUnionOf` and
-`isIntersectionOf` like:
+If you need an union type or an intersection type, use `is.UnionOf` and
+`is.IntersectionOf` like:
 
 ```typescript
 import { is } from "@core/unknownutil";

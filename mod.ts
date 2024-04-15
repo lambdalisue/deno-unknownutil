@@ -6,10 +6,10 @@
  * It provides `is` module for type predicate functions and `assert`, `ensure`, and
  * `maybe` helper functions.
  *
- * ### is\*
+ * ### is.\*
  *
  * Type predicate function is a function which returns `true` if a given value is
- * expected type. For example, `isString` (or `is.String`) returns `true` if a
+ * expected type. For example, `is.String` returns `true` if a
  * given value is `string`.
  *
  * ```typescript
@@ -21,7 +21,7 @@
  * }
  * ```
  *
- * For more complex types, you can use `is*Of` (or `is.*Of`) functions like:
+ * For more complex types, you can use `is.*Of` functions like:
  *
  * ```typescript
  * import {
@@ -69,7 +69,7 @@
  * ```
  *
  * Additionally, you can manipulate the predicate function returned from
- * `isObjectOf` with `isPickOf`, `isOmitOf`, `isPartialOf`, and `isRequiredOf`
+ * `is.ObjectOf` with `is.PickOf`, `is.OmitOf`, `is.PartialOf`, and `is.RequiredOf`
  * similar to TypeScript's `Pick`, `Omit`, `Partial`, `Required` utility types.
  *
  * ```typescript
@@ -155,7 +155,7 @@
  * //});
  * ```
  *
- * If you need an union type or an intersection type, use `isUnionOf` and `isIntersectionOf`
+ * If you need an union type or an intersection type, use `is.UnionOf` and `is.IntersectionOf`
  * like:
  *
  * ```typescript

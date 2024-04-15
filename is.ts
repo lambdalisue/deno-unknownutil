@@ -1057,17 +1057,7 @@ function isObjectOf<
   T extends Record<PropertyKey, Predicate<unknown>>,
 >(
   predObj: T,
-): Predicate<ObjectOf<T>> & WithMetadata<IsObjectOfMetadata>;
-function isObjectOf<
-  T extends Record<PropertyKey, Predicate<unknown>>,
->(
-  predObj: T,
-  options?: { strict?: boolean },
 ): Predicate<ObjectOf<T>> & WithMetadata<IsObjectOfMetadata> {
-  if (options?.strict) {
-    // deno-lint-ignore no-explicit-any
-    return isStrictOf(isObjectOf(predObj)) as any;
-  }
   return setPredicateFactoryMetadata(
     (x: unknown): x is ObjectOf<T> => {
       if (
